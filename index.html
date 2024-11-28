@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Man Ki Baat</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+
+</head>
+<body>
+    <div id="auth-container">
+        <div class="auth-box" id="register-box">
+            <h2>Register</h2>
+            <input type="text" id="register-username" placeholder="Username">
+            <input type="password" id="register-password" placeholder="Password">
+            <button id="register-btn">Register</button>
+            <p>Already have an account? <span id="show-login">Login</span></p>
+        </div>
+
+        <div class="auth-box hidden" id="login-box">
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-btn">Login</button>
+            <p>Don't have an account? <span id="show-register">Register</span></p>
+        </div>
+    </div>
+
+    <div id="app" class="hidden">
+        <header>
+            <h1>Man Ki Baat</h1>
+            <div id="theme-toggle">
+                <span id="light-mode" class="theme-icon">☀️</span>
+                <span id="dark-mode" class="theme-icon hidden">🌙</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <input type="file" id="wallpaper" accept="image/*" hidden>
+                    <button id="change-wallpaper">Change Wallpaper</button>
+                </div>
+                <div id="chat-box">
+                    <!-- Chat messages will be dynamically added here -->
+                </div>
+                <div class="chat-input">
+                    <textarea id="message-input" placeholder="Type your message..."></textarea>
+                    <button id="send-message">Send</button>
+                    <div class="emoji-picker">
+                        😊😂❤️👍🙌🎉😢
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Add event listener to send message button
+        document.getElementById('send-message').addEventListener('click', function() {
+            const messageInput = document.getElementById('message-input');
+            const chatBox = document.getElementById('chat-box');
+            const message = messageInput.value.trim();
+            if (message) {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                messageInput.value = '';
+            }
+        });
+
+        // Add event listener to change wallpaper button
+        document.getElementById('change-wallpaper').addEventListener('click', function() {
+            const wallpaperInput = document.getElementById('wallpaper');
+            wallpaperInput.click();
+        });
+
+        // Add event listener to wallpaper input
+        document.getElementById('wallpaper').addEventListener('change', function() {
+            const wallpaperInput = document.getElementById('wallpaper');
+            const chatContainer = document.querySelector('.chat-container');
+            const file = wallpaperInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                chatContainer.style.backgroundImage = `url(${event.target.result})`;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
